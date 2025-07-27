@@ -19,106 +19,136 @@ O projeto utiliza as seguintes tecnologias e frameworks:
 
 ---
 
+# Backend – Ruby on Rails + PostgreSQL via Docker
 
+A API do projeto foi desenvolvida com **Ruby on Rails**, conectada a um banco **PostgreSQL** que roda em container Docker. O Rails roda **localmente** (fora do container), enquanto o PostgreSQL roda **dentro de um container Docker**.
 
-# Backend Ruby on Rails + PostgreSQL com Docker
+## Tecnologias e versões utilizadas
 
-O backend é uma API Rails configurada para usar PostgreSQL, rodando dentro de containers Docker via Docker Compose.
+| Tecnologia       | Versão recomendada |
+|------------------|--------------------|
+| Ruby             | 3.3.1              |
+| Rails            | 7.1.5.1            |
+| Docker           | 28.3.2             |
+| Docker Compose   | v2.38.2            |
+| PostgreSQL       | >= 15 (via Docker) |
+
+> **Links úteis:**
+> - [Ruby](https://www.ruby-lang.org/pt/downloads/)
+> - [Rails](https://guides.rubyonrails.org/)
+> - [Docker](https://docs.docker.com/get-docker/)
+> - [Docker Compose](https://docs.docker.com/compose/)
+> - [PostgreSQL](https://www.postgresql.org/docs/)
+
+---
 
 ## Pré-requisitos
 
-- Docker instalado ([https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/))
-- Docker Compose instalado (já vem incluso no Docker Desktop)
-- (Opcional) Terminal com permissão para usar Docker sem sudo (configurar grupo `docker`)
+Antes de rodar o backend, tenha instalado:
+
+- Ruby 3.3.1 (recomendo usar `rbenv` ou `rvm`)
+- Bundler (`gem install bundler`)
+- Docker e Docker Compose
+- Node.js (para compilar assets caso necessário)
 
 ---
 
-## Primeira configuração (após clonar o repositório)
 
-1. Suba os containers em background:
+## Como instalar os pré-requisitos
+
+### Ruby 3.3.1
+
+Recomendo usar o [rbenv](https://github.com/rbenv/rbenv) para instalar e gerenciar a versão correta do Ruby:
 
 ```bash
-docker compose up -d
+# Instalar rbenv (exemplo no Ubuntu)
+sudo apt update
+sudo apt install -y git build-essential libssl-dev libreadline-dev zlib1g-dev
+
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+
+# Instalar plugin ruby-build
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+# Instalar Ruby 3.3.1
+rbenv install 3.3.1
+rbenv global 3.3.1
+
+# Verificar
+ruby -v
 ````
 
-2. Instale as dependências Ruby (gems) dentro do container web:
+---
+
+### Bundler
+
+Com o Ruby instalado, instale o Bundler (gerenciador de gems):
 
 ```bash
-docker compose exec web bundle install
-```
-
-3. Crie o banco de dados:
-
-```bash
-docker compose exec web rails db:create
-```
-
-4. (Opcional) Rode as migrações, se houver:
-
-```bash
-docker compose exec web rails db:migrate
+gem install bundler
 ```
 
 ---
 
-## Rodando a aplicação
+### Docker + Docker Compose
 
-Para rodar a aplicação e ver os logs no terminal:
+Siga o guia oficial de instalação:
 
-```bash
-docker compose up
-```
+* [Docker para Linux](https://docs.docker.com/engine/install/)
+* [Docker para Windows/macOS](https://docs.docker.com/get-docker/)
 
-Acesse no navegador: [http://localhost:3000](http://localhost:3000)
-
----
-
-## Workflow após atualizar o código (`git pull`)
-
-Sempre que atualizar o código, execute:
+Verifique se está tudo certo:
 
 ```bash
-docker compose up -d
-docker compose exec web bundle install
-docker compose exec web rails db:migrate
+docker --version
+docker compose version
 ```
 
----
-
-## Parar a aplicação
+Se necessário, adicione seu usuário ao grupo `docker`:
 
 ```bash
-docker compose down
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
----
 
-## Limpar containers órfãos e volumes (ATENÇÃO: apaga dados do banco)
+--- 
+
+## Como rodar o backend
+
+### 1. Subir o banco de dados PostgreSQL (container Docker)
+
+Na raiz do projeto, rode:
 
 ```bash
-docker compose down --remove-orphans -v
+docker compose up -d db
 ```
+### 2. Passo a passo para rodar o backend (localmente)
 
----
-
-## Dúvidas ou problemas?
-
-Abra uma issue ou fale com o time de infraestrutura.
-
----
-
-## Observações
-
-* As gems Ruby ficam instaladas dentro do container, por isso é necessário rodar `bundle install` após puxar atualizações que modifiquem o `Gemfile`.
-* O banco de dados PostgreSQL está rodando em container isolado, configurado para persistir dados em volume Docker.
-* Caso receba erro de permissão para usar o Docker, certifique-se que seu usuário está no grupo `docker` ou rode os comandos com `sudo`.
-* Para abrir o console Rails dentro do container:
+Acessar a pasta do backend:
 
 ```bash
-docker compose exec web rails console
+cd backend
 ```
 
+Instalar as dependências Ruby, Criar, migrar e preparar o banco de dados,
+Iniciar o servidor Rails:
+
+```bash
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
 ---
+### 3. aplicação rodando na porta:
+
+```bash
+http://localhost:3000/
+```
 
 ## Rodando o Frontend (Vite + React)
 
@@ -128,6 +158,52 @@ Para executar o frontend localmente, siga os passos abaixo:
 
 * Node.js instalado (recomendo a versão 16 ou superior)
 * npm ou yarn instalado (npm já vem junto com o Node.js)
+
+---
+
+## Node.js + npm
+
+O frontend do projeto requer o Node.js (com npm). Veja abaixo como instalar em diferentes sistemas operacionais:
+
+---
+
+### 🐧 Linux / 🍎 macOS (via NVM - recomendado)
+
+A maneira mais segura e flexível é usar o [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm):
+
+```bash
+# Instalar o NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+source ~/.bashrc  # ou source ~/.zshrc, se estiver usando ZSH
+
+# Instalar a versão LTS mais recente do Node.js
+nvm install --lts
+nvm use --lts
+
+# Verificar se está funcionando
+node -v
+npm -v
+````
+
+> O `npm` já vem incluso com o Node.js.
+
+---
+
+### 🪟 Windows
+
+1. Acesse o site oficial: [https://nodejs.org/](https://nodejs.org/)
+2. Baixe a **versão LTS recomendada**.
+3. Execute o instalador e siga as instruções da instalação padrão.
+4. Após instalar, abra o **Prompt de Comando** ou **PowerShell** e verifique:
+
+```bash
+node -v
+npm -v
+```
+
+> O `npm` é instalado junto com o Node.js.
+
+---
 
 ### Passos para rodar o frontend
 
@@ -158,18 +234,4 @@ npm run dev
 ```
 http://localhost:5173
 ```
-
-Agora o frontend estará rodando em modo de desenvolvimento, com hot reload para facilitar o desenvolvimento.
-
----
-
-Quer que eu faça um trecho para a parte de build também?
-
----
-
-# Boa codagem! 🚀
-
-```
-
----
 
