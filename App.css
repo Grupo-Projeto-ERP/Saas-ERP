@@ -1,0 +1,108 @@
+#root {
+  width: 100%;
+}
+
+.form-container {
+  max-width: 95%;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  color: #333;
+  background-color: #dbd9d9;
+  text-align: center;
+  border: 0.5px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0 ,0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.left-group, .right-group{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.left-group{
+  align-items: flex-start;
+}
+
+.right-group{
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group #os{
+  width: 5ch;
+}
+#cliente{
+  width: 35ch;
+}
+
+#data-entrada, #data-saida{
+  width: 20ch;
+}
+
+label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #444;
+}
+
+input,
+select {
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus {
+  border-color: #0077cc;
+  outline: none;
+  background-color: #fff;
+}
+
+.btn {
+  align-self: flex-end;
+  padding: 0.6rem 1.5rem;
+  background-color: #0077cc;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
