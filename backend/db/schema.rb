@@ -23,17 +23,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_05_131000) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ordem_servicos", force: :cascade do |t|
-    t.integer "numero_os", null: false
-    t.string "nome_cliente", null: false
-    t.date "data_entrada", null: false
-    t.date "data_saida"
-    t.string "status", default: "aguardando_checklist", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["numero_os"], name: "index_ordem_servicos_on_numero_os", unique: true
-  end
-
   create_table "service_orders", force: :cascade do |t|
     t.integer "os_number", null: false
     t.string "client_name", null: false

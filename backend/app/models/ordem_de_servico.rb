@@ -1,2 +1,0 @@
-class OrdemDeServico < ApplicationRecord
-end
