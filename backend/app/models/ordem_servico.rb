@@ -1,10 +1,10 @@
 class OrdemServico < ApplicationRecord
 
   enum status: {
-    aguardando_checklist: 0,
-    aguardando_orcamento: 1,
-    em_andamento: 2,
-    concretizado: 3
+    aguardando_checklist: "aguardando_checklist",
+    aguardando_orcamento: "aguardando_orcamento",
+    em_andamento: "em_andamento",
+    concretizado: "concretizado"
   }
 
   validates :numero_os, uniqueness: true
