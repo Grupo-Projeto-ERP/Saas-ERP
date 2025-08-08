@@ -7,13 +7,14 @@ class OrdemServico < ApplicationRecord
     concretizado: 3
   }
 
-  validates :nome_cliente, :status, :data_entrada, presence: true
   validates :numero_os, uniqueness: true
+  validates :nome_cliente, presence: true
 
-  # Não precisa mais setar numero_os manualmente, banco que gera
 
   def numero_os_formatado
-    format('%4d', numero_os)
+    return '' if numero_os.nil?
+    format('%04d', numero_os)
   end
+
 
 end

@@ -10,28 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_05_131000) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_08_014226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "ordem_de_servicos", force: :cascade do |t|
+  create_table "ordem_servicos", force: :cascade do |t|
     t.string "nome_cliente"
     t.date "data_entrada"
     t.date "data_saida"
     t.string "status"
+    t.integer "numero_os", default: -> { "nextval('numero_os_seq'::regclass)" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "service_orders", force: :cascade do |t|
-    t.integer "os_number", null: false
-    t.string "client_name", null: false
-    t.date "entry_date", null: false
-    t.date "exit_date"
-    t.string "status", default: "aguardando_checklist", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["os_number"], name: "index_service_orders_on_os_number", unique: true
+    t.index ["numero_os"], name: "index_ordem_servicos_on_numero_os", unique: true
   end
 
 end
