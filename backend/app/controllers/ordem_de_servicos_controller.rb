@@ -25,6 +25,7 @@ end
 
 def format_ordem(ordem)
   {
+    id: ordem.id,
     numero_os: ordem.numero_os_formatado,
     nome_cliente: ordem.nome_cliente,
     data_entrada: ordem.data_entrada,
