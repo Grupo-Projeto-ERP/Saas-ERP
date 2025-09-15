@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
+import { formatDateStr } from "../utils/formatDate";
 
 interface OrdemServico {
   id: number;
@@ -69,14 +70,8 @@ const ListaOrdensServico: React.FC = () => {
                   <td className="py-2 px-4">{os.numero_os}</td>
                   <td className="py-2 px-4">{os.nome_cliente}</td>
                   <td className="py-2 px-4">{os.status}</td>
-                  <td className="py-2 px-4">
-                    {new Date(os.data_entrada).toLocaleDateString("pt-BR")}
-                  </td>
-                  <td className="py-2 px-4">
-                    {os.data_saida
-                      ? new Date(os.data_saida).toLocaleDateString("pt-BR")
-                      : "—"}
-                  </td>
+                  <td className="py-2 px-4">{formatDateStr(os.data_entrada)}</td>
+                  <td className="py-2 px-4">{os.data_saida ? formatDateStr(os.data_saida) : "—"}</td>
                 </tr>
               ))
             ) : (
