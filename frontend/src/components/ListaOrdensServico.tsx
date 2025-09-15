@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { formatDateStr } from "../utils/formatDate";
+import { formatStatus } from "../utils/status";
 
 interface OrdemServico {
   id: number;
@@ -69,7 +70,7 @@ const ListaOrdensServico: React.FC = () => {
                 <tr key={os.id} className="border-b hover:bg-gray-100 transition">
                   <td className="py-2 px-4">{os.numero_os}</td>
                   <td className="py-2 px-4">{os.nome_cliente}</td>
-                  <td className="py-2 px-4">{os.status}</td>
+                  <td className="py-2 px-4">{formatStatus(os.status)}</td>
                   <td className="py-2 px-4">{formatDateStr(os.data_entrada)}</td>
                   <td className="py-2 px-4">{os.data_saida ? formatDateStr(os.data_saida) : "—"}</td>
                 </tr>
