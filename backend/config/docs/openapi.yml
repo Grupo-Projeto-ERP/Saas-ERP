@@ -1,27 +1,23 @@
-# http://localhost:3000/openapi.yml
-
 openapi: 3.0.1
 info:
-  title: API ERP - Ordem de Servico
+  title: API ERP - Ordem de Serviço
   version: 1.0.0
-  description: |
-    API para gerenciamento de ordens de servico.
-    Permite listar e criar ordens de servico.
+  description: API para gerenciamento de ordens de serviço. Permite listar e criar ordens de serviço.
 
 servers:
   - url: http://localhost:3000
     description: Servidor local de desenvolvimento
 
 paths:
-  /ordem_servicos:
+  /ordem_de_servicos:
     get:
-      summary: Lista todas as ordens de servico
+      summary: Lista todas as ordens de serviço
       description: Retorna todas as ordens ordenadas da mais recente para a mais antiga.
       tags:
-        - Ordem de Servico
+        - Ordem de Serviço
       responses:
         '200':
-          description: Lista de ordens de servico
+          description: Lista de ordens de serviço
           content:
             application/json:
               schema:
@@ -29,10 +25,10 @@ paths:
                 items:
                   $ref: '#/components/schemas/OrdemServico'
     post:
-      summary: Cria uma nova ordem de servico
-      description: Cria um novo registro de ordem de servico.
+      summary: Cria uma nova ordem de serviço
+      description: Cria um novo registro de ordem de serviço.
       tags:
-        - Ordem de Servico
+        - Ordem de Serviço
       requestBody:
         required: true
         content:
@@ -44,16 +40,16 @@ paths:
                 nome_cliente: "Juan Roberto"
                 data_entrada: "2025-08-24"
                 data_saida: "2025-08-28"
-                status: "Em andamento"
+                status: "aguardando_checklist"
       responses:
         '201':
-          description: Ordem de servico criada com sucesso
+          description: Ordem de serviço criada com sucesso
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrdemServico'
         '422':
-          description: Erro de validacao
+          description: Erro de validação
           content:
             application/json:
               schema:
@@ -65,7 +61,7 @@ paths:
                       type: string
               example:
                 errors:
-                  - "Nome do cliente nao pode ficar em branco"
+                  - "Nome do cliente não pode ficar em branco"
 
 components:
   schemas:
@@ -91,7 +87,12 @@ components:
           example: "2025-08-28"
         status:
           type: string
-          example: "Em andamento"
+          enum:
+            - aguardando_checklist
+            - aguardando_orcamento
+            - em_andamento
+            - finalizada
+          example: "em_andamento"
         created_at:
           type: string
           format: date-time
@@ -100,6 +101,7 @@ components:
           type: string
           format: date-time
           example: "2025-08-24T10:20:30Z"
+
     OrdemServicoCreate:
       type: object
       properties:
@@ -116,6 +118,11 @@ components:
               format: date
             status:
               type: string
+              enum:
+                - aguardando_checklist
+                - aguardando_orcamento
+                - em_andamento
+                - finalizada
           required:
             - nome_cliente
             - data_entrada
