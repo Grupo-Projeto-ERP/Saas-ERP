@@ -64,8 +64,8 @@ const FormNovaOS: React.FC = () => {
         onChange={handleChange}
         className="border rounded p-2 w-full mb-4"
       >
-        <option value="aguardando_checklist">Aguardando Checklist</option>
-        <option value="aguardando_orcamento">aguardando orçamento</option>
+        <option value="aguardando_checklist">Aguardando checklist</option>
+        <option value="aguardando_orcamento">Aguardando orçamento</option>
         <option value="em_andamento">Em andamento</option>
         <option value="concluida">Concluída</option>
       </select>
