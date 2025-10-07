@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast"
 
 interface FormData {
     nome_cliente: string;
@@ -26,14 +27,19 @@ const FormNovaOS: React.FC = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+ async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     try {
       await api.post("/ordem_de_servicos", { ordem_servico: form });
-      navigate("/"); // redireciona para listagem
+
+      toast.success("Ordem de serviço criada com sucesso!"); // <- popup aparece aqui
+
+      // aguarda 1s antes de redirecionar
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.error("Erro ao criar OS:", err);
+      toast.error("Erro ao criar ordem de serviço!");
     } finally {
       setLoading(false);
     }
