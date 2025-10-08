@@ -1,7 +1,7 @@
 export const statusMap: Record<string, string> = {
     aguardando_checklist: "Aguardando Checklist",
-    aguardando_orçamento: "Aguardando Orçamento",
-    em_andamento: "Em andanemnto",
+    aguardando_orcamento: "Aguardando Orçamento",
+    em_andamento: "Em andamento",
     concretizado: "Concretizado",
 };
 

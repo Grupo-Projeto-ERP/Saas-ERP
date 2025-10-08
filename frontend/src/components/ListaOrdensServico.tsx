@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { formatDateStr } from "../utils/formatDate";
 import { formatStatus } from "../utils/status";
+import { useNavigate } from "react-router-dom";
 
 interface OrdemServico {
   id: number;
@@ -13,6 +14,8 @@ interface OrdemServico {
 }
 
 const ListaOrdensServico: React.FC = () => {
+  const navigate = useNavigate(); // 
+
   const [ordens, setOrdens] = useState<OrdemServico[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +49,7 @@ const ListaOrdensServico: React.FC = () => {
           Lista de Ordens de Serviço
         </h2>
         <button
-          onClick={() => (window.location.href = "/nova-os")}
+          onClick={() => navigate("/nova-os")} 
           className="bg-blue-600 hover:bg-blue-700 text-white text-xl rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
         >
           +
